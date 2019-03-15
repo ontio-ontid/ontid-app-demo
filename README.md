@@ -1,4 +1,4 @@
-# plugin_demo
+# ONT ID app demo
 
 ## Project setup
 ```
