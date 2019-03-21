@@ -2,20 +2,37 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
 
-    <button id="login" data-ontid-btn="login">Login with ONT ID</button>
+    <button class="ontid-signin some-other-class" data-onsuccess="onLoginSuccess">Sign in with Ontology</button>
 
     <p>
-      
+      Logined account: 
     </p>
+    <textarea name="" id="" cols="50" rows="10" v-model="loginedAccount"></textarea>
   </div>
 </template>
 
 <script>
 export default {
   name: 'HelloWorld',
+  data() {
+
+    return {
+      loginedAccount: ''
+    }
+  },
   props: {
     msg: String
+  },
+  mounted() {
+    window.onLoginSuccess = this.handleLoginSuccess.bind(this)
+  },
+  methods: {
+    handleLoginSuccess(result) {
+      this.loginedAccount = JSON.stringify(result)
+      // then send token to the backend
+    }
   }
+  
 }
 </script>
 
