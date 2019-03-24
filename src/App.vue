@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to My Ontology dApp"/>
+    <HelloWorld msg="Welcome to My Awesome App"/>
   </div>
 </template>
 

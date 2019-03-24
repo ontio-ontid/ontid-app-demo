@@ -5,7 +5,7 @@
     <button class="ontid-signin some-other-class" data-onsuccess="onLoginSuccess">Sign in with Ontology</button>
 
     <p>
-      Logined account: 
+      Response of sign in: 
     </p>
     <textarea name="" id="" cols="50" rows="10" v-model="loginedAccount"></textarea>
   </div>
