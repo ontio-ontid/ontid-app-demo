@@ -31,9 +31,9 @@ The content should be `{your app's ONT ID}@{your app's name}`. For example:
 
 ### 3. Add the sign in button on your page where you want the user to click. 
 
-* The class name `ontid-signin` is required, which define the default button style, and you can add other classes if you need so.
-* The attribute `data-onsuccess` is required, which define the callback function and it will be called when the user sign in with Ontology successfully.
-* About how to get the response of the sign in, you can define one global function called onLoginSuccess, or you can assign the the function to any value you want. Please refer to this demo.
+* The class name `ontid-signin` is required, which defines the default button style, and you can add other classes if you need so.
+* The attribute `data-onsuccess` is required, which defines the callback function and it will be called after the user sign in with Ontology successfully.
+* About how to get the response of the sign in, you can define a global function called onLoginSuccess, or you can assign the the function to any value you want. Please refer to this demo.
 * 
 
 ```
