@@ -38,4 +38,5 @@ The content should be `{your app's ONT ID}@{your app's name}`. For example:
 
 ```
 <button class="ontid-signin some-other-class" data-onsuccess="onLoginSuccess">Sign in with Ontology</button>
+
 ```
