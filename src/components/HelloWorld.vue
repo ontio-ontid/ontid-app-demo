@@ -12,16 +12,15 @@
 </template>
 
 <script>
+import * as b64 from 'base64-url';
 export default {
   name: 'HelloWorld',
   data() {
 
     return {
-      loginedAccount: ''
+      loginedAccount: '',
+      msg: 'Welcome to our Awesome DApp'
     }
-  },
-  props: {
-    msg: String
   },
   mounted() {
     window.onLoginSuccess = this.handleLoginSuccess.bind(this)
@@ -29,6 +28,17 @@ export default {
   methods: {
     handleLoginSuccess(result) {
       this.loginedAccount = JSON.stringify(result)
+
+      // verify signature
+      const jwt = result.access_token;
+      const jwtStrs = jwt.split('.');
+      const msg = jwtStrs[0] + '.' + jwtStrs[1]
+      const msgHex = Ont.utils.str2hexstr(msg)
+      const decodeSig = b64.decode(jwtStrs[2])
+      const signature = Ont.Crypto.Signature.deserializeHex(decodeSig)
+      const ontid_backend_pk = new Ont.Crypto.PublicKey('026d3557e55fffe7bc5a9a8fc0c7361bc48590c17bf4d0d345e3f354bb64a0452a')
+      const verifyResult = ontid_backend_pk.verify(msgHex, signature)
+      console.log(verifyResult)
       // then send token to the backend
     }
   }
