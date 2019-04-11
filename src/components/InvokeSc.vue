@@ -165,7 +165,8 @@ export default {
 
         },
         toPaymentPage() {
-            const url = ONTID_FRONTEND + `/transaction?orderid=${this.responseData.orderid}&invoke_token=${this.responseData.invoke_token}&callback_url=http://localhost:8080/invokesc`
+            const callback = location.href;
+            const url = ONTID_FRONTEND + `/transaction?orderid=${this.responseData.orderid}&invoke_token=${this.responseData.invoke_token}&callback_url=${callback}`
             window.open(url, '_blank')
         }
     }
