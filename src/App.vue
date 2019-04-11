@@ -28,4 +28,18 @@ img {
 p {
   margin:5px 0;
 }
+
+.btn {
+		background:#2472CC;
+		color:rgba(255,255,255,1);
+		border:0;
+		outline: none;
+		cursor: pointer;
+        height:40px;
+        padding: 0 30px;
+        font-size: 18px;
+	}
+	.btn:hover {
+		background:#4688D5;
+	}
 </style>

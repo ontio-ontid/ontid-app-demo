@@ -2,8 +2,8 @@
 (function (ontologyAccount) {
     ontologyAccount = window.ontologyAccount || {};
     // window.ontologyAccount.origin = 'https://signin.ont.io';
-    // ontologyAccount.origin = 'http://139.219.136.188:10390';
-    ontologyAccount.origin = 'http://localhost:8081';
+    ontologyAccount.origin = 'http://139.219.136.188:10390';
+    // ontologyAccount.origin = 'http://192.168.50.126:8081';
 
 
 
@@ -50,7 +50,7 @@
         var host = ontologyAccount.origin
         var targetUrl = host + '/#/signin' + '?appontid=' + ontologyAccount.appontid + '&appname=' + ontologyAccount.appname;
         var windowName = 'ONT_ID_Open_Platform'
-        var windowFeatures = "menubar=no,location=yes,resizable=yes,scrollbars=yes,status=yes,height=600,width=600"
+        var windowFeatures = "menubar=no,location=yes,resizable=yes,scrollbars=yes,status=yes,height=700,width=1280"
         var windowRef = window.open(targetUrl, windowName, windowFeatures)
         ontologyAccount.windowRef = windowRef;
     }

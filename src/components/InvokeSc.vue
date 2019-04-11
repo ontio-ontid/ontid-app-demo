@@ -24,19 +24,7 @@
 .invoke-item {
     margin-bottom: 20px;
 }
-.btn {
-		background:#2472CC;
-		color:rgba(255,255,255,1);
-		border:0;
-		outline: none;
-		cursor: pointer;
-        height:40px;
-        padding: 0 30px;
-        font-size: 18px;
-	}
-	.btn:hover {
-		background:#4688D5;
-	}
+
 </style>
 <template>
     <div class="invoke-container">
@@ -66,10 +54,18 @@
 <script>
 import axios from 'axios'
 import * as b64 from 'base64-url';
+import { ONTID_BACKEND, ONTID_FRONTEND } from '../common/config'
 export default {
     name: 'InvokeSc',
     data() {
-        //TODO params中不能包含中文否则后台无法解析base64
+        const nonce = Math.random().toString(36).substring(7);
+        const wallet = JSON.parse(sessionStorage.getItem('wallet'))
+          // The ONT ID of dapp registerd on TestNet
+        const provider = {
+                "public_key": "035fec6acab834f28723797ea0f1e0a6fe6f76c54345ca91b098a92e3788c7df65",
+                "wif": "KyASnW1jYqqKRiq8YtXeGZN4ewmZVCsGPpxUe2iHHZjyB1nTxkgt",
+                "ontid": "did:ont:ANDQ4CGTGqYcVPiSkb6z8bFkncq2kimnAs"
+            }
         const params = {
                 "invokeConfig": {
                     "contractHash": "0200000000000000000000000000000000000000",
@@ -77,7 +73,7 @@ export default {
                         "operation": "transfer",
                         "args": [{
                             "name": "arg0-from",
-                            "value": "Address:AcuBbdmNk6NjAR2uuDegXK5AUkHcuRXyJH"
+                            "value": "Address:" + wallet.address
                         },
                         {
                             "name": "arg1-to",
@@ -85,11 +81,11 @@ export default {
                         },
                         {
                             "name": "arg2-amount",
-                            "value": "Long:100000000"
+                            "value": "Long:10000000"
                         }
                         ]
                     }],
-                    "payer": "AcuBbdmNk6NjAR2uuDegXK5AUkHcuRXyJH",
+                    "payer": wallet.address,
                     "gasLimit": 20000,
                     "gasPrice": 500
                 },
@@ -97,25 +93,18 @@ export default {
                     "name": "My Awesome DApp",
                     "logo":"",
                     "message": "transferONG",
-                    "ontid": "did:ont:ATJpbW9Cn39zKnkmhnNPrA4XvcSzaogm2T",
+                    "ontid": provider.ontid,
                     "callback": "", 
-                    "createtime": 1552541388,
-                    "expire": 1556620993,
-                    "nonce": 5434536
+                    "nonce": nonce
                 }
             }
         return {
             requestData: JSON.stringify(params),
-            // 本地注册的第三方ONT ID数据
-            provider: {
-                "public_key": "020c8e5479c2f024bcda81009f6525bda8db6726f3948b130b3a762a1db03e55a1",
-                "wif": "L18iBWjQLyzJ72SgcMQvedDJ2jYnGqp5x8mHJNW3KNe6mnx8ZEZE",
-                "manage_public_key": "026d3557e55fffe7bc5a9a8fc0c7361bc48590c17bf4d0d345e3f354bb64a0452a",
-                "ontid": "did:ont:ATJpbW9Cn39zKnkmhnNPrA4XvcSzaogm2T"
-            },
+            // The ONT ID of dapp registerd on TestNet
+            provider,
             responseData: {
                 orderid: '',
-                access_token: ''
+                invoke_token: ''
             },
             txhash: ''
         }
@@ -135,7 +124,10 @@ export default {
                     "alg": "ES256",
                     "typ": "JWT"
                 }, 
-                payload: JSON.parse(this.requestData)
+                payload: {
+                    ...JSON.parse(this.requestData),
+                    exp: new Date('2019-04-30').getTime()
+                }
             }
             const jwtHeader = b64.encode(JSON.stringify(jwtObj.header), 'utf-8');
             const jwtPayload = b64.encode(JSON.stringify(jwtObj.payload), 'utf-8');
@@ -155,21 +147,25 @@ export default {
             const jwt = jwtHeader + '.' + jwtPayload + '.' + jwtSignature;
 
             // 构造请求
-            const host = 'http://localhost:10332'
-            const url = host + '/api/v1/ontid/request/order'
-            const user = 'did:ont:AcuBbdmNk6NjAR2uuDegXK5AUkHcuRXyJH'
+            const host = ONTID_BACKEND
+            const url = host + '/api/v1/provider/request/order'
+            const user = sessionStorage.getItem('ontid')
             const body = {
                 data: jwt,
                 user
             }
-            axios.post(url, body).then(res => {
+            axios.post(url, body, {
+                headers: {
+                    access_token: sessionStorage.getItem('access_token')
+                }
+            }).then(res => {
                 console.log(res)
                 this.responseData = res.data.result;
             })
 
         },
         toPaymentPage() {
-            const url = `http://localhost:8081/transaction?orderid=${this.responseData.orderid}&callback_url=http://localhost:8080/invokesc`
+            const url = ONTID_FRONTEND + `/transaction?orderid=${this.responseData.orderid}&invoke_token=${this.responseData.invoke_token}&callback_url=http://localhost:8080/invokesc`
             window.open(url, '_blank')
         }
     }
