@@ -81,7 +81,7 @@ export default {
                         },
                         {
                             "name": "arg2-amount",
-                            "value": "Long:10000000000000"
+                            "value": "Long:10000000"
                         }
                         ]
                     }],
