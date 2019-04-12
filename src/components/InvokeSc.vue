@@ -81,7 +81,7 @@ export default {
                         },
                         {
                             "name": "arg2-amount",
-                            "value": "Long:10000000"
+                            "value": "Long:10000000000000"
                         }
                         ]
                     }],
@@ -103,7 +103,7 @@ export default {
             // The ONT ID of dapp registerd on TestNet
             provider,
             responseData: {
-                orderid: '',
+                orderId: '',
                 invoke_token: ''
             },
             txhash: ''
@@ -151,7 +151,7 @@ export default {
             const url = host + '/api/v1/provider/request/order'
             const user = sessionStorage.getItem('ontid')
             const body = {
-                data: jwt,
+                app_token: jwt,
                 user
             }
             axios.post(url, body, {
@@ -166,7 +166,8 @@ export default {
         },
         toPaymentPage() {
             const callback = location.href;
-            const url = ONTID_FRONTEND + `/transaction?orderid=${this.responseData.orderid}&invoke_token=${this.responseData.invoke_token}&callback_url=${callback}`
+            const params = encodeURIComponent(`${this.responseData.orderId}&${this.responseData.invoke_token}&${callback}`)
+            const url = ONTID_FRONTEND + '/transaction?params=' + params
             window.open(url, '_blank')
         }
     }
