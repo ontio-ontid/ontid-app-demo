@@ -161,6 +161,8 @@ export default {
             }).then(res => {
                 console.log(res)
                 this.responseData = res.data.result;
+            }).catch(err => {
+                alert(JSON.stringify(err.response.data))
             })
 
         },

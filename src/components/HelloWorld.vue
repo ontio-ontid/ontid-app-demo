@@ -51,6 +51,7 @@ export default {
       const jwt = result.access_token;
       sessionStorage.setItem('access_token', jwt)
       sessionStorage.setItem('ontid', result.ontid)
+      this.fetchUserInfoWithToken()
       this.loginedAccount = JSON.stringify({
         access_token: result.access_token,
         ontid: result.ontid
