@@ -16,9 +16,10 @@
     </p>
     <textarea name="" id="" cols="50" rows="10" v-model="loginedAccount"></textarea>
 
-    <div class="payment-btn">
+    <!-- Do not support ONT ID payment now -->
+    <!-- <div class="payment-btn">
       <button class="btn" @click="toInvokeSc">To do Payment/Invoke smart contract</button>
-    </div>
+    </div> -->
   </div>
 </template>
 

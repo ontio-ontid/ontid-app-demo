@@ -5,10 +5,26 @@
     ontologyAccount.origin = 'http://139.219.136.188:10390';
     // ontologyAccount.origin = 'http://192.168.52.123:8081';
 
-
+    var addEvent = function(element, event, func) {
+        if(!element) {
+            return;
+        }
+        if(typeof func !== 'function') {
+            return;
+        }
+        if (element.attachEvent) {
+            element.attachEvent("on" + event, func)
+        } else {
+            if (element.addEventListener) {
+                element.addEventListener(event, func, false)
+            } else {
+                element["on" + event] = func
+            }
+        }
+    }
 
     // 注册点击事件代理，处理登录请求
-    document.addEventListener('click', function (e) {
+    addEvent(document, 'click', function (e) {
         var e = e || window.event;
         var target = e.target || ev.srcElement;
         var loginBtnClass = 'ontid-signin';
@@ -20,7 +36,7 @@
     })
 
     // 注册message事件回调，处理登录返回结果
-    window.addEventListener('message', function (e) {
+    addEvent(window, 'message', function (e) {
         // var ontidOrigin = 'http://172.168.3.47'
         var ontidOrigin = ontologyAccount.origin // Ontology account's origin
         if (e.origin !== ontidOrigin) return;
@@ -40,7 +56,7 @@
         }
     })
 
-        /*
+    /*
     1. 读取meta
     2. window.open
     3. window.postMessage
@@ -53,9 +69,10 @@
         if(browserLang.indexOf('zh') > -1) {
             lang = 'zh'
         }
+        //从后台获取应用方注册的回调地址
         var params = encodeURIComponent(ontologyAccount.appontid + '&' + ontologyAccount.appname + '&' + lang)
         // var targetUrl = host + '/signin' + '?appontid=' + ontologyAccount.appontid + '&appname=' + ontologyAccount.appname;
-        var targetUrl = host + '/signin' + '?params=' + params;
+        var targetUrl = host + '/oauth2.0/authorize/' + '?params=' + params;
         var windowName = 'ONT_ID_Open_Platform'
         var windowFeatures = "menubar=no,location=yes,resizable=yes,scrollbars=yes,status=yes,height=700,width=1280"
         var windowRef = window.open(targetUrl, windowName, windowFeatures)
